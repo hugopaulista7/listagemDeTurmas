@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -69,5 +70,21 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    protected function validateRequest(array $data) {
+        if ($this->validator($data)) {
+            $user = $this->create($data);
+            return view('auth.login')->with([
+                'success' => true,
+                'message' => 'Usuário criado com sucesso'
+            ]);
+        }
+        return redirect()->route('system.register')->withErrors(['message' => 'Formulário incompleto ou inválido']);
+
+    }
+
+    public function __invoke(Request $req) {
+        $this->validateRequest($req->all());
     }
 }

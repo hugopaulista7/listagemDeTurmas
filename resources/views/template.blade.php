@@ -8,6 +8,10 @@
     <title>Lista de Estudantes</title>
 </head>
 <body>
-    
+    <div class="body-wrap">
+        @stack('body')
+    </div>
 </body>
+
+@stack('javascript')
 </html>
