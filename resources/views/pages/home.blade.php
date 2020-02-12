@@ -1,2 +1,4 @@
-@push('body')
-<h1>oi</h1>
+@extends('template')
+@section('body')
+<h1></h1>
+@endsection

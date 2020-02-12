@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="body-wrap">
-        @stack('body')
+        @yield('body')
     </div>
 </body>
 

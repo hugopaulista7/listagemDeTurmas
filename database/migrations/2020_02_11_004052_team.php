@@ -21,6 +21,8 @@ class Team extends Migration
         Schema::create('team', function(Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->dateTime('created_at');
+            $table->dateTime('updated_at');
         });
     }
 
