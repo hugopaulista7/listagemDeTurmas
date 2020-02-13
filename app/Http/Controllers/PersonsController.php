@@ -7,6 +7,7 @@ use App\Person;
 
 use App\Http\Controllers\Interfaces\ControllerInterface;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\StudentsController;
 
 use Illuminate\Http\Request;
 
@@ -19,7 +20,7 @@ class PersonsController extends Controller implements ControllerInterface
     }
 
     public function edit($id) {
-        $person = (new Person)->where('id', $id)->first();
+        $person = (new Person)->where('id', $id)->with('student')->first();
         return view('admin.person.edit', ['person' => $person]);
     }
 
@@ -38,6 +39,11 @@ class PersonsController extends Controller implements ControllerInterface
         $person->fill($data);
         $person->save();
 
+        $makeStudent = $request->get('student');
+        if ($makeStudent === 'on') {
+            $this->attachStudent($person);
+        }
+
         return redirect()->route('system.persons')->with(['success' => 'Pessoa editada com sucesso']);
     }
 
@@ -48,8 +54,17 @@ class PersonsController extends Controller implements ControllerInterface
         $person = (new Person);
         $person->fill($data);
         $person->save();
+        if ($request->get('student')) {
+            $this->attachStudent($person);
+        }
 
         return redirect()->route('system.persons')->with(['success' => 'Pessoa cadastrada com sucesso']);
+    }
+
+
+    public function attachStudent(Person $person) {
+        (new StudentsController)->attachPerson($person);
+        return $this;
     }
 
     public function create() {

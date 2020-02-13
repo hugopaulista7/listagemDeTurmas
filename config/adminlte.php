@@ -181,7 +181,7 @@ return [
         ],
         [
             'text' => 'Alunos',
-            'url'  => '',
+            'url'  => 'students',
         ],
         [
             'text' => 'Turmas',

@@ -14,9 +14,9 @@ class Student extends Migration
     public function up()
     {
         Schema::create('student', function(Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('person_id');
-            $table->foreign('person_id')
+            $table->unsignedInteger('id');
+            $table->primary(['id']);
+            $table->foreign('id')
                   ->references('id')
                   ->on('person')
                   ->onUpdate('cascade')

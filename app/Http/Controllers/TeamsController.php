@@ -7,9 +7,9 @@ use App\Team;
 
 use App\Http\Controllers\Interfaces\ControllerInterface;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\StudentsController;
 
 use Illuminate\Http\Request;
-
 
 class TeamsController extends Controller implements ControllerInterface
 {
@@ -19,8 +19,9 @@ class TeamsController extends Controller implements ControllerInterface
     }
 
     public function edit($id) {
-        $team = (new Team)->where('id', $id)->first();
-        return view('admin.team.edit', ['team' => $team]);
+        $team = (new Team)->with('students')->with('students')->where('id', $id)->first();
+        $students = (new StudentsController)->getAllStudents();
+        return view('admin.team.edit', ['team' => $team, 'students' => $students]);
     }
 
     public function delete($id) {
@@ -53,5 +54,33 @@ class TeamsController extends Controller implements ControllerInterface
 
     public function create() {
         return view('admin.team.create');
+    }
+
+    public function dontHaveStudent($team, $student) {
+        return $student->team === null;
+    }
+
+    public function attachStudent(Request $request, $id) {
+        $stuId = $request->get('student');
+        $team = Team::where('id', $id)->with('students')->first();
+
+        $student = (new StudentsController)->getById($stuId);
+        $message = 'Esse aluno já está em uma turma';
+        if ($this->dontHaveStudent($team, $student)) {
+            $message = '';
+            $team->students()->save($student);
+        }
+        \Session::flash('message', $message);
+        \Session::flash('messageClass', strlen($message) > 0 ?  'danger' : 'success');
+        return redirect(route('system.teams.edit', $id) . '#alunos');
+    }
+
+    public function detachStudent($teamId, $studentId) {
+        
+        $student = (new StudentsController)->getById($studentId);
+        $student->team_id = null;
+        $student->save();
+
+        return redirect(route('system.teams.edit', $teamId) . '#alunos');
     }
 }

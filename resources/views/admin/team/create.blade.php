@@ -4,7 +4,6 @@
 
 
 @section('dashboard-content')
-
 <form action="{{route('system.teams.insert')}}" method="POST" >
     {{ csrf_field() }}
     <div class="form-group">
@@ -14,5 +13,6 @@
     
     <button type="submit" class="btn btn-success">Confirmar</button>
 </form>
+
 
 @endsection

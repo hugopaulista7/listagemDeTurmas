@@ -18,8 +18,7 @@ class Person extends Migration
             $table->string('name');
             $table->string('gender');
             $table->date('birth_date');
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
+            $table->timestamps();
             
         });
     }

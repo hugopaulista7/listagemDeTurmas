@@ -14,12 +14,13 @@ class AddTeamToStudent extends Migration
     public function up()
     {
         Schema::table('student', function (Blueprint $table) {
-            $table->unsignedInteger('team_id');
+            $table->unsignedInteger('team_id')->nullable();
+            $table->timestamps();
             $table->foreign('team_id')
                   ->references('id')
                   ->on('team')
                   ->onUpdate('cascade')
-                  ->onDelete('cascade');
+                  ->onDelete('set null');
         });
     }
 
@@ -31,6 +32,7 @@ class AddTeamToStudent extends Migration
     public function down()
     {
         Schema::table('student', function (Blueprint $table) {
+            $table->dropForeign(['team_id']);
             $table->dropColumn('team_id');
         });
     }

@@ -51,4 +51,11 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/team/{id}', 'TeamsController@edit')->name('system.teams.edit');
     Route::get('/team/delete/{id}', 'TeamsController@delete')->name('system.teams.delete');
     Route::post('/team/update/{id}', 'TeamsController@update')->name('system.teams.update');
+
+    Route::get('/students', 'StudentsController@get')->name('system.students');
+
+    Route::get('/students/delete/{id}', 'StudentsController@delete')->name('system.students.delete');
+
+    Route::post('/team/student/{id}', 'TeamsController@attachStudent')->name('system.team.attach');
+    Route::get('/team/student/delete/{teamId}/{studentId}', 'TeamsController@detachStudent')->name('system.team.detach');
 });

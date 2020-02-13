@@ -25,6 +25,6 @@
         
     </div>
     @endsection
-@stack('dash-js')
+    @stack('dash-js')
 
     

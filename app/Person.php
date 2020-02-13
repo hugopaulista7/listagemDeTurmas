@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-
+use App\Student;
 class Person extends Model
 {
     protected $table = 'person';
@@ -19,4 +19,8 @@ class Person extends Model
         return (new Carbon)->createFromFormat('Y-m-d', $this->birth_date)->format('d/m/Y');
     }
 
+
+    public function student() {
+        return $this->hasOne(Student::class, 'id', 'id');
+    }
 }
